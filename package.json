@@ -12,6 +12,7 @@
     "@types/node": "20.2.1",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
+    "antd": "^5.5.0",
     "axios": "^1.4.0",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
@@ -22,5 +23,8 @@
     "react-dom": "18.2.0",
     "styled-components": "^6.0.0-rc.1",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.26"
   }
 }
