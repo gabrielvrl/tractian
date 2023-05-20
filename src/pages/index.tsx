@@ -28,7 +28,6 @@ export default function Home() {
         highcharts={Highcharts}
         options={options}
       />
-      <h1>Hello Tractian!</h1>
     </div>
   )
 }
