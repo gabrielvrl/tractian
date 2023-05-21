@@ -10,7 +10,6 @@ const Login = () => {
   const theme = useTheme();
   const router = useRouter();
   const authenticateUser = useContext(AuthContext);
-  console.log(authenticateUser?.user)
   const [username, setUsername] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [passwordVisible, setPasswordVisible] = useState(false);

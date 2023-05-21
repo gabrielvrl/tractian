@@ -1,5 +1,6 @@
 import { AuthContext } from '@/contexts/AuthContext';
 import { LoginOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons';
+import { Typography } from 'antd';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { useTheme } from 'styled-components';
@@ -12,18 +13,28 @@ const Header = () => {
 
   return(
     <S.Container>
-      <S.Title onClick={() => router.push('/')} style={{ cursor: 'pointer' }}>Tractian</S.Title>
+      <S.Title onClick={() => router.push('/')} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
+        Tractian
+        <Typography
+          style={{
+            color: theme?.palette.primary.main,
+            marginLeft: '0.5rem',
+            fontSize: '2rem',
+            fontFamily: 'Inter',
+          }}
+        >.</Typography>
+      </S.Title>
       <S.LoginContainer onClick={() => router.push('/login')} style={{ cursor: 'pointer' }}>
         {
           authenticatedUser?.user ? (
             <>
               <UserOutlined style={{
-                fontSize: '2rem',
+                fontSize: '1.5rem',
                 color: theme?.palette.primary.main,
               }} />
               <S.LoginText>{`Seja bem vindo, ${authenticatedUser?.user.username}`}</S.LoginText>
               <LogoutOutlined style={{
-                fontSize: '2rem',
+                fontSize: '1.5rem',
                 color: theme?.palette.primary.main,
                 marginLeft: '1rem',
               }} onClick={() => {
