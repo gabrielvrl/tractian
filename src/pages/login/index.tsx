@@ -54,8 +54,7 @@ const Login = () => {
 
   const handleSubmit = () => {
     if (username) {
-      const newUser: User = { username };
-      authenticateUser?.setUser(newUser);
+      authenticateUser?.login(username);
       router.push('/');
     }
   }

@@ -7,7 +7,8 @@ export interface User {
 
 interface AuthContextProps {
   user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  login: (username: string) => void;
+  logout: () => void;
 }
 
 interface AuthProviderProps {
@@ -27,6 +28,15 @@ const AuthProvider: React.FC<PropsWithChildren<AuthProviderProps>> = ({ children
     }
   }, []);
 
+  const login = (username: string) => {
+    const newUser: User = { username };
+    setUser(newUser);
+  };
+
+  const logout = () => {
+    setUser(null);
+  };
+
   useEffect(() => {
     // Armazenar o usuário no Local Storage sempre que ele for atualizado
     if (user) {
@@ -39,7 +49,7 @@ const AuthProvider: React.FC<PropsWithChildren<AuthProviderProps>> = ({ children
   // Aqui você pode adicionar as funções de login, logout, etc.
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

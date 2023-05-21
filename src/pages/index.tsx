@@ -1,10 +1,12 @@
 import { AuthContext } from "@/contexts/AuthContext";
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
+import { useRouter } from "next/router";
 import { useContext, useEffect } from "react"
 import { api } from "../api"
 
 export default function Home() {
+  const router = useRouter();
   const authenticatedUser = useContext(AuthContext);
   console.log(authenticatedUser?.user)
 
@@ -16,6 +18,13 @@ export default function Home() {
 
     getAssets();
   }, [])
+
+  useEffect(() => {
+    if(!authenticatedUser?.user) {
+      router.push('/login');
+    }
+  }, [])
+
 
   return (
     <div>

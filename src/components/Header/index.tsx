@@ -1,5 +1,5 @@
 import { AuthContext } from '@/contexts/AuthContext';
-import { LoginOutlined, UserOutlined } from '@ant-design/icons';
+import { LoginOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { useTheme } from 'styled-components';
@@ -22,6 +22,15 @@ const Header = () => {
                 color: theme?.palette.primary.main,
               }} />
               <S.LoginText>{`Seja bem vindo, ${authenticatedUser?.user.username}`}</S.LoginText>
+              <LogoutOutlined style={{
+                fontSize: '2rem',
+                color: theme?.palette.primary.main,
+                marginLeft: '1rem',
+              }} onClick={() => {
+                authenticatedUser?.logout();
+                router.push('/login');
+              }
+              } />
             </>
           ) : (
             <>
