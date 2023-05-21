@@ -50,6 +50,8 @@ export default function Home() {
       {
         assets.map((asset) => {
           if(JSON.stringify(asset.assignedUserIds).includes(authenticatedUser!.user!.username)) {
+            const uniqueYAxisCategories = Array.from(new Set(asset.healthHistory.map(healthTimestamp => (healthTimestamp.status))));
+
             return(
               <S.CardContainer key={asset.id}>
                 <Typography.Title
@@ -72,17 +74,17 @@ export default function Home() {
                       text: 'Health History'
                     },
                     xAxis: {
-                      categories: asset.healthHistory.map(healthTimestamp => (formatDate(healthTimestamp.timestamp)))
+                      categories: asset.healthHistory.map(health => (formatDate(health.timestamp)))
                     },
                     yAxis: {
                       title: {
                         text: 'Operation System'
                       },
-                      categories: asset.healthHistory.map(healthTimestamp => (healthTimestamp.status))
+                      categories: uniqueYAxisCategories
                     },
                     series: [{
                       name: 'Saúde do Sistema Operacional',
-                      data: asset.healthHistory.map((_, index) => (index))
+                      data: asset.healthHistory.map((health, index) => (health.status === uniqueYAxisCategories[0] ? 0 : health.status === uniqueYAxisCategories[1] ? 1 : 2)),
                     }],
                   }}
                 />
