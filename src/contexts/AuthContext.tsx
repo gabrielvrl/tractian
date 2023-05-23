@@ -1,13 +1,18 @@
 // contexts/AuthContext.tsx
+import { api } from '@/api';
 import React, { createContext, PropsWithChildren, ReactNode, useEffect, useState } from 'react';
 
 export interface User {
-  username: string;
+  companyId: number,
+  email: string,
+  id: number,
+  name: string,
+  unitId: number
 }
 
 interface AuthContextProps {
   user: User | null;
-  login: (username: string) => void;
+  login: (email: string) => void;
   logout: () => void;
 }
 
@@ -28,9 +33,20 @@ const AuthProvider: React.FC<PropsWithChildren<AuthProviderProps>> = ({ children
     }
   }, []);
 
-  const login = (username: string) => {
-    const newUser: User = { username };
-    setUser(newUser);
+  const login = async (email: string) => {
+    try {
+      const { data } = await api.get('/users');
+  
+      const userExists = data.filter((user: User) => user.email === email);
+      const userLogged = userExists[0];
+      if (userLogged) {
+        setUser(userLogged);
+      } else {
+        console.log('Usuário não encontrado na lista de usuários.');
+      }
+    } catch (error) {
+      console.error('Erro ao obter lista de usuários:', error);
+    }
   };
 
   const logout = () => {

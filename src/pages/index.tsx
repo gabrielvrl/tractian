@@ -2,8 +2,9 @@ import { AuthContext } from "@/contexts/AuthContext";
 import { IAssets } from "@/interfaces";
 import { formatDate } from "@/utils/formatDate";
 import { Typography } from "antd";
+import {CaretDownOutlined} from "@ant-design/icons";
 import Highcharts from "highcharts"
-import HighchartsReact from "highcharts-react-official"
+import HighchartsReact from "highcharts-react-official";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react"
 import { useTheme } from "styled-components";
@@ -16,7 +17,11 @@ export default function Home() {
   const authenticatedUser = useContext(AuthContext);
   const [assets, setAssets] = useState<IAssets[]>([] as IAssets[]);
 
-  console.log(assets)
+  useEffect(() => {
+    if(!authenticatedUser?.user) {
+      router.push('/login');
+    }
+  }, []);
 
   useEffect(() => {
     const getAssets = async () => {
@@ -27,15 +32,10 @@ export default function Home() {
     getAssets();
   }, [])
 
-  useEffect(() => {
-    if(!authenticatedUser?.user) {
-      router.push('/login');
-    }
-  }, []);
-
   const TypographTitle = {
-    color: theme?.palette.common.white,
+    color: theme?.palette.primary.main,
     marginBottom: '1rem',
+    cursor: 'pointer',
   };
 
   const TypographText = {
@@ -45,25 +45,52 @@ export default function Home() {
     fontWeight: 'bold',
   };
 
+  const IconStyle = {
+    color: theme?.palette.primary.main,
+    backgroundColor: 'transparent',
+    cursor: 'pointer',
+  }
+
+  const handleNavigation = (id: number) => {
+    router.push(`/asset/${id}`);
+  }
+
   return (
     <S.Container>
       {
         assets.map((asset) => {
-          if(JSON.stringify(asset.assignedUserIds).includes(authenticatedUser!.user!.username)) {
+          if(asset.assignedUserIds.includes(authenticatedUser?.user?.id || 0)) {
             const uniqueYAxisCategories = Array.from(new Set(asset.healthHistory.map(healthTimestamp => (healthTimestamp.status))));
 
             return(
               <S.CardContainer key={asset.id}>
-                <Typography.Title
-                  level={2}
-                  style={TypographTitle}
-                >{asset.name}</Typography.Title>
-                <S.CardContent>
-                  <Typography.Text style={TypographText}>Modelo: {asset.model}</Typography.Text>
-                  <Typography.Text style={TypographText}>Estado: {asset.status}</Typography.Text>
-                  <Typography.Text style={TypographText}>Empresa: {asset.companyId}</Typography.Text>
-                  <Typography.Text style={TypographText}>Sensores: {asset.sensors.map(sensor => (`${sensor} `))}</Typography.Text>
-                </S.CardContent>
+                <S.InfoContainer>
+                  <S.InfoContent>
+                  <Typography.Title
+                      level={2}
+                      style={TypographTitle}
+                      onClick={() => handleNavigation(asset.id)}
+                    >{asset.name}</Typography.Title>
+                    <S.CardContent>
+                      <Typography.Text style={TypographText}>Modelo: {asset.model}</Typography.Text>
+                      <Typography.Text style={TypographText}>Estado: {asset.status}</Typography.Text>
+                      <Typography.Text style={TypographText}>Sensor(es): {asset.sensors.map(sensor => (`${sensor} `))}</Typography.Text>
+                      <Typography.Text style={TypographText}>Nota da Saúde do Sistema: {asset.healthscore}</Typography.Text>
+                      <S.SeeMore onClick={() => handleNavigation(asset.id)}>
+                        <CaretDownOutlined style={IconStyle} />
+                        <Typography.Text style={{
+                          color: theme?.palette.primary.main,
+                          fontSize: '1rem',
+                          fontWeight: 'bold',
+                          cursor: 'pointer',
+                          marginLeft: '0.5rem',
+                        }}>Ver mais</Typography.Text>
+                      </S.SeeMore>
+
+                    </S.CardContent>
+                  </S.InfoContent>
+                  <S.MachineImage src={asset.image} alt={'Image'} width={300} height={300} />
+                </S.InfoContainer>
                 <HighchartsReact
                   highcharts={Highcharts}
                   options={{
@@ -71,7 +98,7 @@ export default function Home() {
                       type: 'line'
                     },
                     title: {
-                      text: 'Health History'
+                      text: 'Saúde do Sistema'
                     },
                     xAxis: {
                       categories: asset.healthHistory.map(health => (formatDate(health.timestamp)))
@@ -93,7 +120,6 @@ export default function Home() {
           }
         })
       }
-
     </S.Container>
   )
 }

@@ -10,7 +10,7 @@ const Login = () => {
   const theme = useTheme();
   const router = useRouter();
   const authenticateUser = useContext(AuthContext);
-  const [username, setUsername] = useState<string>();
+  const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -52,8 +52,8 @@ const Login = () => {
   if(authenticateUser?.user) router.push('/');
 
   const handleSubmit = () => {
-    if (username) {
-      authenticateUser?.login(username);
+    if (email) {
+      authenticateUser?.login(email);
       router.push('/');
     }
   }
@@ -62,7 +62,7 @@ const Login = () => {
     <S.Container>
       <S.LoginContainer>
         <S.ContentContainer>
-          <S.InputText>Usuário</S.InputText>
+          <S.InputText>Email</S.InputText>
           <Input 
             size="large" 
             suffix={<UserOutlined 
@@ -71,8 +71,8 @@ const Login = () => {
             style={InputStyle}
             inputMode="text"
             styles={InnerInputStyles}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </S.ContentContainer>
 
@@ -93,7 +93,7 @@ const Login = () => {
         <Button style={ButtonStyle} onClick={handleSubmit}>Entrar</Button>
       </S.LoginContainer>
 
-      <S.Disclaimer>Entre com os usuários: <strong>"1", "2", "3" ou "4"</strong> e qualquer senha para visualizar dados da API.</S.Disclaimer>
+      <S.Disclaimer>Entre com os usuários <strong>já cadastrados na api</strong> e qualquer senha para visualizar dados da API.</S.Disclaimer>
     </S.Container>
   )
 }

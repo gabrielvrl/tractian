@@ -11,6 +11,8 @@ const Header = () => {
   const router = useRouter();
   const authenticatedUser = useContext(AuthContext);
 
+  console.log(authenticatedUser)
+
   return(
     <S.Container>
       <S.Title onClick={() => router.push('/')} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'row', alignItems: 'center'  }}>
@@ -32,7 +34,7 @@ const Header = () => {
                 fontSize: '1.5rem',
                 color: theme?.palette.primary.main,
               }} />
-              <S.LoginText>{`Seja bem vindo, ${authenticatedUser?.user.username}`}</S.LoginText>
+              <S.LoginText>{`Seja bem vindo, ${authenticatedUser?.user?.name}`}</S.LoginText>
               <LogoutOutlined style={{
                 fontSize: '1.5rem',
                 color: theme?.palette.primary.main,

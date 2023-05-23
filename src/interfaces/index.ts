@@ -35,7 +35,9 @@ export interface IAssets {
   name: string,
   sensors: string[],
   specifications: {
-    maxTemp: number
+    maxTemp: number,
+    power?: number,
+    rpm?: number,
   },
   status: string,
   unitId: number
