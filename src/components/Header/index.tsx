@@ -32,7 +32,7 @@ const Header = () => {
                 fontSize: '1.5rem',
                 color: theme?.palette.primary.main,
               }} onClick={() => router.push(`/user-profile/${authenticatedUser.user?.id}`)}  />
-              <S.LoginText onClick={() => router.push('/userProfile')}>{`Seja bem vindo, ${authenticatedUser?.user?.name}`}</S.LoginText>
+              <S.LoginText onClick={() => router.push(`/profile/${authenticatedUser.user?.id}`)}>{`Seja bem vindo, ${authenticatedUser?.user?.name}`}</S.LoginText>
               <LogoutOutlined style={{
                 fontSize: '1.5rem',
                 color: theme?.palette.primary.main,
